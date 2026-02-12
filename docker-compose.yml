@@ -1,0 +1,42 @@
+﻿services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+      POSTGRES_DB: coleccion
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgresql://app:app@db:5432/coleccion?schema=public
+      PORT: 3000
+      UPLOAD_DIR: /data/uploads
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - uploads_data:/data/uploads
+    command: ["pnpm", "start:dev:docker"]
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    environment:
+      VITE_API_URL: http://localhost:3000
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+
+volumes:
+  db_data:
+  uploads_data:

@@ -1,0 +1,66 @@
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { piecesService } from '../../../services/pieces.service';
+import type { CreatePieceDTO, UpdatePieceDTO } from '../../../shared/types';
+
+export const usePieces = () => {
+    return useQuery({
+        queryKey: ['pieces'],
+        queryFn: piecesService.getAll,
+    });
+};
+
+export const usePiece = (id: string) => {
+    return useQuery({
+        queryKey: ['pieces', id],
+        queryFn: () => piecesService.getById(id),
+        enabled: !!id,
+    });
+};
+
+export const useCreatePiece = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: CreatePieceDTO) => piecesService.create(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['pieces'] });
+        },
+    });
+};
+
+export const useUpdatePiece = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, data }: { id: string; data: UpdatePieceDTO }) =>
+            piecesService.update(id, data),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ['pieces'] });
+            queryClient.invalidateQueries({ queryKey: ['pieces', variables.id] });
+        },
+    });
+};
+
+export const useDeletePiece = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (id: string) => piecesService.delete(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['pieces'] });
+        },
+    });
+};
+
+export const useToggleExchange = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ id, available }: { id: string; available: boolean }) =>
+            piecesService.toggleExchange(id, available),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ['pieces'] });
+            queryClient.invalidateQueries({ queryKey: ['pieces', variables.id] });
+        },
+    });
+};
