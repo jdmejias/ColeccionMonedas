@@ -103,16 +103,35 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
     const isLoading = createMutation.isPending || updateMutation.isPending;
 
     return (
-        <form onSubmit={handleSubmit} className="max-w-2xl mx-auto space-y-6">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    {mode === 'create' ? 'Registrar Nueva Pieza' : 'Editar Pieza'}
+        <div className="max-w-2xl mx-auto animate-slide-up">
+            {/* Hero */}
+            <div className="page-hero mb-8">
+                <div className="flex items-center gap-3">
+                    <span className="text-4xl">{mode === 'create' ? '➕' : '✏️'}</span>
+                    <div>
+                        <h1 className="font-display text-3xl font-bold">
+                            {mode === 'create' ? 'Registrar Nueva Pieza' : 'Editar Pieza'}
+                        </h1>
+                        <p className="text-primary-100 text-sm mt-0.5">
+                            {mode === 'create'
+                                ? 'Agrega una nueva moneda o billete a tu colección'
+                                : 'Actualiza los datos de tu pieza'}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+            <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h2 className="font-display text-lg font-bold text-gray-900 mb-5 flex items-center gap-2">
+                    🪙 Información de la pieza
                 </h2>
 
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="sm:col-span-2">
                     <Input
                         id="name"
-                        label="Nombre"
+                        label="Nombre de la pieza"
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -120,6 +139,7 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                         required
                         placeholder="Ej: Moneda de 1 peso argentino"
                     />
+                    </div>
 
                     <Select
                         id="type"
@@ -153,18 +173,6 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                         placeholder="Ej: 1985"
                     />
 
-                    <Select
-                        id="conservationState"
-                        label="Estado de Conservación"
-                        value={formData.conservationState}
-                        onChange={(e) =>
-                            setFormData({ ...formData, conservationState: e.target.value as ConservationState })
-                        }
-                        options={CONSERVATION_STATES}
-                        error={errors.conservationState}
-                        required
-                    />
-
                     <Input
                         id="estimatedValue"
                         label="Valor Estimado (USD)"
@@ -177,6 +185,19 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                         placeholder="Ej: 50.00"
                     />
 
+                    <Select
+                        id="conservationState"
+                        label="Estado de Conservación"
+                        value={formData.conservationState}
+                        onChange={(e) =>
+                            setFormData({ ...formData, conservationState: e.target.value as ConservationState })
+                        }
+                        options={CONSERVATION_STATES}
+                        error={errors.conservationState}
+                        required
+                    />
+
+                    <div className="sm:col-span-2">
                     <Input
                         id="imageUrl"
                         label="URL de la Imagen"
@@ -187,7 +208,9 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                         required
                         placeholder="https://ejemplo.com/imagen.jpg"
                     />
+                    </div>
 
+                    <div className="sm:col-span-2">
                     <Textarea
                         id="description"
                         label="Descripción"
@@ -196,22 +219,34 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                         error={errors.description}
                         placeholder="Descripción detallada de la pieza..."
                     />
-                </div>
-
-                <div className="flex gap-4 mt-6">
-                    <Button type="submit" variant="primary" isLoading={isLoading} className="flex-1">
-                        {mode === 'create' ? 'Crear Pieza' : 'Actualizar Pieza'}
-                    </Button>
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={() => navigate('/')}
-                        disabled={isLoading}
-                    >
-                        Cancelar
-                    </Button>
+                    </div>
                 </div>
             </div>
+
+            {/* Image Preview */}
+            {formData.imageUrl && (
+                <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <p className="text-xs font-semibold text-gray-500 uppercase mb-3">Vista previa de imagen</p>
+                    <div className="h-40 rounded-xl overflow-hidden bg-gray-100">
+                        <img
+                            src={formData.imageUrl}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                            onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
+                    </div>
+                </div>
+            )}
+
+            <div className="flex gap-3 pb-8">
+                <Button type="submit" variant="primary" isLoading={isLoading} size="lg" className="flex-1">
+                    {mode === 'create' ? '✅ Crear Pieza' : '✅ Actualizar Pieza'}
+                </Button>
+                <Button type="button" variant="secondary" size="lg" onClick={() => navigate('/')} disabled={isLoading}>
+                    Cancelar
+                </Button>
+            </div>
         </form>
+        </div>
     );
 };

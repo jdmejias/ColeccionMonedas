@@ -19,7 +19,6 @@ export const usePiece = (id: string) => {
 
 export const useCreatePiece = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: (data: CreatePieceDTO) => piecesService.create(data),
         onSuccess: () => {
@@ -30,7 +29,6 @@ export const useCreatePiece = () => {
 
 export const useUpdatePiece = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: ({ id, data }: { id: string; data: UpdatePieceDTO }) =>
             piecesService.update(id, data),
@@ -43,7 +41,6 @@ export const useUpdatePiece = () => {
 
 export const useDeletePiece = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: (id: string) => piecesService.delete(id),
         onSuccess: () => {
@@ -54,7 +51,6 @@ export const useDeletePiece = () => {
 
 export const useToggleExchange = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: ({ id, available }: { id: string; available: boolean }) =>
             piecesService.toggleExchange(id, available),
@@ -62,5 +58,20 @@ export const useToggleExchange = () => {
             queryClient.invalidateQueries({ queryKey: ['pieces'] });
             queryClient.invalidateQueries({ queryKey: ['pieces', variables.id] });
         },
+    });
+};
+
+export const useTopPieces = (limit = 5) => {
+    return useQuery({
+        queryKey: ['pieces', 'top', limit],
+        queryFn: () => piecesService.getTopByValue(limit),
+    });
+};
+
+export const useSimilarPieces = (pieceId: string, limit = 4) => {
+    return useQuery({
+        queryKey: ['pieces', 'similar', pieceId],
+        queryFn: () => piecesService.getSimilar(pieceId, limit),
+        enabled: !!pieceId,
     });
 };

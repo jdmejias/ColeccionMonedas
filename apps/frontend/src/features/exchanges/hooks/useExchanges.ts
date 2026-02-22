@@ -17,9 +17,15 @@ export const useExchange = (id: string) => {
     });
 };
 
+export const useExchangeHistory = () => {
+    return useQuery({
+        queryKey: ['exchanges', 'history'],
+        queryFn: exchangesService.getHistory,
+    });
+};
+
 export const useCreateExchange = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: (data: CreateExchangeRequestDTO) => exchangesService.create(data),
         onSuccess: () => {
@@ -30,13 +36,41 @@ export const useCreateExchange = () => {
 
 export const useUpdateExchangeStatus = () => {
     const queryClient = useQueryClient();
-
     return useMutation({
         mutationFn: ({ id, status }: { id: string; status: 'accepted' | 'rejected' }) =>
             exchangesService.updateStatus(id, status),
-        onSuccess: (_, variables) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['exchanges'] });
-            queryClient.invalidateQueries({ queryKey: ['exchanges', variables.id] });
         },
     });
 };
+
+export const useSendCounterOffer = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ id, counterOffer }: { id: string; counterOffer: string }) =>
+            exchangesService.sendCounterOffer(id, counterOffer),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['exchanges'] });
+        },
+    });
+};
+
+export const useRespondToCounter = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({
+            id,
+            action,
+            newMessage,
+        }: {
+            id: string;
+            action: 'accept' | 'reject' | 'new';
+            newMessage?: string;
+        }) => exchangesService.respondToCounter(id, action, newMessage),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['exchanges'] });
+        },
+    });
+};
+

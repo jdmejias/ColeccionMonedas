@@ -26,4 +26,12 @@ export const piecesService = {
     toggleExchange: async (id: string, available: boolean): Promise<Piece> => {
         return mockAPI.pieces.toggleExchange(id, available);
     },
+
+    getTopByValue: async (limit = 5): Promise<Piece[]> => {
+        return mockAPI.pieces.getTopByValue(limit);
+    },
+
+    getSimilar: async (pieceId: string, limit = 4): Promise<Piece[]> => {
+        return mockAPI.pieces.getSimilar(pieceId, limit);
+    },
 };

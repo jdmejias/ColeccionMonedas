@@ -21,4 +21,20 @@ export const exchangesService = {
     ): Promise<ExchangeRequest> => {
         return mockAPI.exchanges.updateStatus(id, status);
     },
+
+    sendCounterOffer: async (id: string, counterOffer: string): Promise<ExchangeRequest> => {
+        return mockAPI.exchanges.sendCounterOffer(id, counterOffer);
+    },
+
+    respondToCounter: async (
+        id: string,
+        action: 'accept' | 'reject' | 'new',
+        newMessage?: string
+    ): Promise<ExchangeRequest> => {
+        return mockAPI.exchanges.respondToCounter(id, action, newMessage);
+    },
+
+    getHistory: async (): Promise<ExchangeRequest[]> => {
+        return mockAPI.exchanges.getHistory();
+    },
 };
