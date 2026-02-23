@@ -113,11 +113,7 @@ export const CollectionListPage = () => {
                         { label: 'Total piezas', value: pieces?.length ?? 0, icon: '🪙' },
                         { label: 'Monedas', value: pieces?.filter(p => p.type === 'Moneda').length ?? 0, icon: '🔵' },
                         { label: 'Billetes', value: pieces?.filter(p => p.type === 'Billete').length ?? 0, icon: '🟢' },
-                        {
-                            label: 'Valor total',
-                            value: `$${(pieces ?? []).reduce((s, p) => s + p.estimatedValue, 0).toLocaleString('es-ES', { minimumFractionDigits: 0 })}`,
-                            icon: '💰',
-                        },
+                        { label: 'En intercambio', value: availableForExchange, icon: '🔄' },
                     ].map(stat => (
                         <div key={stat.label} className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2 text-white text-sm">
                             <span className="mr-1.5">{stat.icon}</span>

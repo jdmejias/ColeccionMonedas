@@ -88,7 +88,6 @@ export const CreateExchangePage = () => {
                     <h4 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-1">{piece.name}</h4>
                     <div className="text-xs text-gray-500 space-y-0.5">
                         <p>🌍 {piece.country} · 📅 {piece.year}</p>
-                        <p className="font-semibold text-primary-600">${piece.estimatedValue.toFixed(2)} USD</p>
                     </div>
                 </div>
             </div>

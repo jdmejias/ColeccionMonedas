@@ -36,7 +36,6 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
         country: piece?.country || '',
         year: piece?.year?.toString() || '',
         conservationState: piece?.conservationState || '' as ConservationState,
-        estimatedValue: piece?.estimatedValue?.toString() || '',
         imageUrl: piece?.imageUrl || '',
         description: piece?.description || '',
     });
@@ -55,11 +54,6 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
         }
         if (!formData.conservationState) {
             newErrors.conservationState = 'El estado de conservación es requerido';
-        }
-        if (!formData.estimatedValue) {
-            newErrors.estimatedValue = 'El valor estimado es requerido';
-        } else if (isNaN(Number(formData.estimatedValue)) || Number(formData.estimatedValue) < 0) {
-            newErrors.estimatedValue = 'El valor debe ser un número válido';
         }
         if (!formData.imageUrl.trim()) {
             newErrors.imageUrl = 'La URL de la imagen es requerida';
@@ -80,7 +74,6 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
             country: formData.country.trim(),
             year: Number(formData.year),
             conservationState: formData.conservationState,
-            estimatedValue: Number(formData.estimatedValue),
             imageUrl: formData.imageUrl.trim(),
             description: formData.description.trim(),
         };
@@ -171,18 +164,6 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                         error={errors.year}
                         required
                         placeholder="Ej: 1985"
-                    />
-
-                    <Input
-                        id="estimatedValue"
-                        label="Valor Estimado (USD)"
-                        type="number"
-                        step="0.01"
-                        value={formData.estimatedValue}
-                        onChange={(e) => setFormData({ ...formData, estimatedValue: e.target.value })}
-                        error={errors.estimatedValue}
-                        required
-                        placeholder="Ej: 50.00"
                     />
 
                     <Select

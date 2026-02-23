@@ -14,7 +14,6 @@ export interface Piece {
     country: string;
     year: number;
     conservationState: ConservationState;
-    estimatedValue: number;
     imageUrl: string;
     description: string;
     availableForExchange: boolean;
@@ -29,7 +28,6 @@ export interface CreatePieceDTO {
     country: string;
     year: number;
     conservationState: ConservationState;
-    estimatedValue: number;
     imageUrl: string;
     description: string;
 }

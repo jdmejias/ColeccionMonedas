@@ -117,18 +117,13 @@ export const PieceDetailPage = () => {
                                         value: piece.conservationState,
                                         badge: CONSERVATION_COLOR[piece.conservationState],
                                     },
-                                    {
-                                        label: 'Valor Estimado',
-                                        value: `$${piece.estimatedValue.toLocaleString('es-ES', { minimumFractionDigits: 2 })} USD`,
-                                        highlight: true,
-                                    },
                                 ].map(field => (
                                     <div key={field.label} className="bg-amber-50/50 rounded-xl p-3">
                                         <p className="text-xs font-semibold text-gray-500 uppercase mb-1">{field.label}</p>
                                         {field.badge ? (
                                             <span className={`badge ${field.badge} text-xs px-2.5 py-1`}>{field.value}</span>
                                         ) : (
-                                            <p className={`font-semibold ${field.highlight ? 'text-primary-600 text-lg' : 'text-gray-900'}`}>
+                                            <p className="font-semibold text-gray-900">
                                                 {field.value}
                                             </p>
                                         )}
@@ -220,9 +215,6 @@ export const PieceDetailPage = () => {
                                     <p className="font-semibold text-xs text-gray-900 line-clamp-2 mb-1">{sp.name}</p>
                                     <div className="flex items-center justify-between">
                                         <span className="text-xs text-gray-500">{sp.country} · {sp.year}</span>
-                                        <span className="text-xs font-bold text-primary-600">
-                                            ${sp.estimatedValue.toFixed(0)}
-                                        </span>
                                     </div>
                                     {sp.availableForExchange && (
                                         <span className="badge badge-green text-[10px] mt-1.5">🔄 Intercambio</span>

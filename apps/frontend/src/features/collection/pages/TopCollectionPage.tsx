@@ -30,8 +30,6 @@ export const TopCollectionPage = () => {
         );
     }
 
-    const totalValue = pieces?.reduce((sum, p) => sum + p.estimatedValue, 0) ?? 0;
-
     return (
         <div className="animate-slide-up">
             {/* Hero */}
@@ -48,10 +46,6 @@ export const TopCollectionPage = () => {
                     <p className="text-primary-100 text-lg">
                         Las piezas más valiosas de NumisColección
                     </p>
-                    <div className="mt-4 inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2 text-sm">
-                        <span>💰 Valor total:</span>
-                        <span className="font-bold text-yellow-200">${totalValue.toLocaleString('es-ES', { minimumFractionDigits: 2 })} USD</span>
-                    </div>
                 </div>
             </div>
 
@@ -107,11 +101,10 @@ export const TopCollectionPage = () => {
                                 </div>
 
                                 <div className="text-right md:text-center flex-shrink-0">
-                                    <p className="text-xs text-gray-400 mb-0.5">Valor estimado</p>
-                                    <p className="font-display text-2xl font-bold text-primary-600">
-                                        ${piece.estimatedValue.toLocaleString('es-ES', { minimumFractionDigits: 2 })}
+                                    <p className="text-xs text-gray-400 mb-0.5">Conservación</p>
+                                    <p className="font-display text-lg font-bold text-primary-600">
+                                        {piece.conservationState}
                                     </p>
-                                    <p className="text-xs text-gray-400">USD</p>
                                 </div>
                             </div>
                         </div>

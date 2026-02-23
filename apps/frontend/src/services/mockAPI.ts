@@ -9,7 +9,6 @@ let pieces: Piece[] = [
         country: 'Argentina',
         year: 1985,
         conservationState: 'Muy Bueno',
-        estimatedValue: 15.50,
         imageUrl: 'https://images.unsplash.com/photo-1621762389513-6587d02c39a8?w=400&h=300&fit=crop',
         description: 'Moneda histórica argentina en excelente estado de conservación, pieza rara de la época de la transición democrática.',
         availableForExchange: true,
@@ -24,7 +23,6 @@ let pieces: Piece[] = [
         country: 'México',
         year: 2019,
         conservationState: 'Excelente',
-        estimatedValue: 50.00,
         imageUrl: 'https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=400&h=300&fit=crop',
         description: 'Billete conmemorativo mexicano en perfecto estado, con marca de agua visible.',
         availableForExchange: false,
@@ -39,7 +37,6 @@ let pieces: Piece[] = [
         country: 'Estados Unidos',
         year: 1921,
         conservationState: 'Bueno',
-        estimatedValue: 120.00,
         imageUrl: 'https://images.unsplash.com/photo-1621416894569-59a5b2d85128?w=400&h=300&fit=crop',
         description: 'Dólar Morgan de plata pura. Última acuñación de esta serie icónica. Pieza de alta demanda entre coleccionistas.',
         availableForExchange: true,
@@ -54,7 +51,6 @@ let pieces: Piece[] = [
         country: 'España',
         year: 1772,
         conservationState: 'Regular',
-        estimatedValue: 280.00,
         imageUrl: 'https://images.unsplash.com/photo-1642543348745-268b5b36d0d8?w=400&h=300&fit=crop',
         description: 'Moneda de plata de época colonial, acuñada en México para la Corona Española. Reverse en escudo real.',
         availableForExchange: true,
@@ -69,7 +65,6 @@ let pieces: Piece[] = [
         country: 'Venezuela',
         year: 2016,
         conservationState: 'Muy Bueno',
-        estimatedValue: 8.00,
         imageUrl: 'https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?w=400&h=300&fit=crop',
         description: 'Billete de alto valor nominal, coleccionable por el contexto histórico de la hiperinflación venezolana.',
         availableForExchange: true,
@@ -84,7 +79,6 @@ let pieces: Piece[] = [
         country: 'Suiza',
         year: 1935,
         conservationState: 'Excelente',
-        estimatedValue: 95.00,
         imageUrl: 'https://images.unsplash.com/photo-1605792657660-596af9009e82?w=400&h=300&fit=crop',
         description: 'Franco suizo de plata en excepcional estado. Figura de Helvetia en el anverso.',
         availableForExchange: false,
@@ -99,7 +93,6 @@ let pieces: Piece[] = [
         country: 'Colombia',
         year: 1959,
         conservationState: 'Bueno',
-        estimatedValue: 45.00,
         imageUrl: 'https://images.unsplash.com/photo-1583314965950-cd92a6010cba?w=400&h=300&fit=crop',
         description: 'Billete colombiano de mediados del siglo XX, con grabado en relieve y filigrana original.',
         availableForExchange: true,
@@ -114,7 +107,6 @@ let pieces: Piece[] = [
         country: 'Reino Unido',
         year: 1887,
         conservationState: 'Muy Bueno',
-        estimatedValue: 350.00,
         imageUrl: 'https://images.unsplash.com/photo-1566836610593-62a64888a216?w=400&h=300&fit=crop',
         description: 'Soberano de oro de la era Victoriana con el busto de la Reina Victoria. Pieza de lujo para todo coleccionista.',
         availableForExchange: false,
@@ -129,7 +121,6 @@ let pieces: Piece[] = [
         country: 'Chile',
         year: 1895,
         conservationState: 'Bueno',
-        estimatedValue: 60.00,
         imageUrl: 'https://images.unsplash.com/photo-1521327125322-a0e80dc8b4d2?w=400&h=300&fit=crop',
         description: 'Peso de plata de la República de Chile del siglo XIX. Genuina pieza numismática latinoamericana.',
         availableForExchange: true,
@@ -144,7 +135,6 @@ let pieces: Piece[] = [
         country: 'Bolivia',
         year: 1800,
         conservationState: 'Regular',
-        estimatedValue: 420.00,
         imageUrl: 'https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?w=400&h=300&fit=crop',
         description: 'Legendario "Real de a 8" o "Peso de a 8" acuñado en la Casa de Moneda de Potosí. La moneda que cambió el mundo.',
         availableForExchange: true,
@@ -285,7 +275,9 @@ export const mockAPI = {
 
         getTopByValue: async (limit = 5): Promise<Piece[]> => {
             await delay(300);
-            return [...pieces].sort((a, b) => b.estimatedValue - a.estimatedValue).slice(0, limit);
+            return [...pieces]
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+                .slice(0, limit);
         },
 
         getSimilar: async (pieceId: string, limit = 4): Promise<Piece[]> => {

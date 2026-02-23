@@ -59,10 +59,6 @@ export const PieceCard = ({
                     </div>
                 )}
 
-                {/* Value bottom-right */}
-                <div className="absolute bottom-2.5 right-2.5 bg-black/50 backdrop-blur-sm text-white text-xs font-bold px-2.5 py-1 rounded-lg">
-                    ${piece.estimatedValue.toLocaleString('es-ES', { minimumFractionDigits: 2 })}
-                </div>
             </div>
 
             {/* Body */}
