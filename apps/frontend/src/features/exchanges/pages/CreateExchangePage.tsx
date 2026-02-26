@@ -1,5 +1,5 @@
 import { useState, type FormEvent, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Navigate } from 'react-router-dom';
 import { usePieces } from '../../collection/hooks/usePieces';
 import { useCreateExchange } from '../hooks/useExchanges';
 import { useAuth } from '../../auth/AuthContext';
@@ -14,7 +14,9 @@ export const CreateExchangePage = () => {
     const [searchParams] = useSearchParams();
     const { data: pieces, isLoading } = usePieces();
     const createExchangeMutation = useCreateExchange();
-    const { user } = useAuth();
+    const { user, isOwner } = useAuth();
+
+    if (isOwner) return <Navigate to="/exchanges" replace />;
 
     const preselectedToPiece = searchParams.get('toPiece') ?? '';
 

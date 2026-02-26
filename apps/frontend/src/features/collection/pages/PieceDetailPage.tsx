@@ -23,6 +23,7 @@ export const PieceDetailPage = () => {
     const toggleMutation = useToggleExchange();
     const deleteMutation = useDeletePiece();
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [showImageModal, setShowImageModal] = useState(false);
 
     const handleToggleExchange = async () => {
         if (!piece) return;
@@ -74,16 +75,28 @@ export const PieceDetailPage = () => {
                 <div className="md:flex">
                     {/* Image */}
                     <div className="md:w-5/12 relative">
-                        <div className="h-72 md:h-full min-h-72 bg-gradient-to-br from-amber-50 to-gray-100">
+                        <div
+                            className="h-72 md:h-full min-h-72 bg-gradient-to-br from-amber-50 to-gray-100 relative group cursor-zoom-in"
+                            onClick={() => setShowImageModal(true)}
+                            title="Haz clic para ampliar"
+                        >
                             <img
                                 src={piece.imageUrl}
                                 alt={piece.name}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                 onError={e => {
                                     (e.target as HTMLImageElement).src =
                                         'https://via.placeholder.com/600x400?text=Sin+Imagen';
                                 }}
                             />
+                            {/* Expand overlay */}
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-2.5 shadow-lg">
+                                    <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                         {/* Badges on image */}
                         <div className="absolute top-4 left-4 flex flex-col gap-2">
@@ -223,6 +236,37 @@ export const PieceDetailPage = () => {
                             </div>
                         ))}
                     </div>
+                </div>
+            )}
+
+            {/* Image Lightbox Modal */}
+            {showImageModal && (
+                <div
+                    className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+                    onClick={() => setShowImageModal(false)}
+                >
+                    <button
+                        className="absolute top-4 right-4 bg-white/20 hover:bg-white/40 text-white rounded-full p-2 transition-colors"
+                        onClick={() => setShowImageModal(false)}
+                        aria-label="Cerrar imagen"
+                    >
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <img
+                        src={piece.imageUrl}
+                        alt={piece.name}
+                        className="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl"
+                        onClick={e => e.stopPropagation()}
+                        onError={e => {
+                            (e.target as HTMLImageElement).src =
+                                'https://via.placeholder.com/600x400?text=Sin+Imagen';
+                        }}
+                    />
+                    <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/70 text-sm">
+                        {piece.name}
+                    </p>
                 </div>
             )}
 
