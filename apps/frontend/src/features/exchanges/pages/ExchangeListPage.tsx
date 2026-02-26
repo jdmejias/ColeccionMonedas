@@ -170,23 +170,25 @@ export const ExchangeListPage = () => {
                 </div>
             </div>
 
-            {/* Stats bar */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                {[
-                    { label: 'Pendientes', value: incoming.filter(e => e.status === 'pending').length, color: 'text-yellow-600', bg: 'bg-yellow-50', icon: '⏳' },
-                    { label: 'Contraofertas', value: incoming.filter(e => e.status === 'countered').length, color: 'text-blue-600', bg: 'bg-blue-50', icon: '💬' },
-                    { label: 'Aceptados', value: outgoing.filter(e => e.status === 'accepted' || e.status === 'counter_accepted').length, color: 'text-green-600', bg: 'bg-green-50', icon: '✅' },
-                    { label: 'Rechazados', value: outgoing.filter(e => e.status === 'rejected' || e.status === 'counter_rejected').length, color: 'text-red-600', bg: 'bg-red-50', icon: '❌' },
-                ].map(stat => (
-                    <div key={stat.label} className={`${stat.bg} rounded-2xl p-4 flex items-center gap-3`}>
-                        <span className="text-2xl">{stat.icon}</span>
-                        <div>
-                            <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
-                            <p className="text-xs text-gray-500">{stat.label}</p>
+            {/* Stats bar - solo visible para el coleccionista (owner) */}
+            {isOwner && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                    {[
+                        { label: 'Pendientes', value: incoming.filter(e => e.status === 'pending').length, color: 'text-yellow-600', bg: 'bg-yellow-50', icon: '⏳' },
+                        { label: 'Contraofertas', value: incoming.filter(e => e.status === 'countered').length, color: 'text-blue-600', bg: 'bg-blue-50', icon: '💬' },
+                        { label: 'Aceptados', value: outgoing.filter(e => e.status === 'accepted' || e.status === 'counter_accepted').length, color: 'text-green-600', bg: 'bg-green-50', icon: '✅' },
+                        { label: 'Rechazados', value: outgoing.filter(e => e.status === 'rejected' || e.status === 'counter_rejected').length, color: 'text-red-600', bg: 'bg-red-50', icon: '❌' },
+                    ].map(stat => (
+                        <div key={stat.label} className={`${stat.bg} rounded-2xl p-4 flex items-center gap-3`}>
+                            <span className="text-2xl">{stat.icon}</span>
+                            <div>
+                                <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
+                                <p className="text-xs text-gray-500">{stat.label}</p>
+                            </div>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
 
             {/* Tabs */}
             <div className="flex gap-2 mb-6">
