@@ -9,6 +9,12 @@ import type { PieceFilters, PieceType, ConservationState } from '../../../shared
 const COUNTRIES = ['Argentina', 'México', 'Estados Unidos', 'España', 'Venezuela', 'Suiza', 'Colombia', 'Reino Unido', 'Chile', 'Bolivia'];
 const CONSERVATION_STATES: ConservationState[] = ['Excelente', 'Muy Bueno', 'Bueno', 'Regular', 'Pobre'];
 
+/** Extracts the numeric denomination from a piece name (e.g. "Peso Argentino $1" → "1", "Billete Bs.5000" → "5000") */
+function extractDenomination(name: string): string | null {
+    const match = name.match(/(\d+)/);
+    return match ? match[1] : null;
+}
+
 export const CollectionListPage = () => {
     const { data: pieces, isLoading, isError, error } = usePieces();
     const toggleMutation = useToggleExchange();
@@ -24,7 +30,19 @@ export const CollectionListPage = () => {
         country: '',
         type: '',
         conservationState: '',
+        denomination: '',
     });
+
+    // Compute available denominations from current pieces
+    const availableDenominations = useMemo(() => {
+        if (!pieces) return [];
+        const denoms = new Set<string>();
+        pieces.forEach(p => {
+            const d = extractDenomination(p.name);
+            if (d) denoms.add(d);
+        });
+        return Array.from(denoms).sort((a, b) => Number(a) - Number(b));
+    }, [pieces]);
     const [showFilters, setShowFilters] = useState(false);
 
     const handleToggleExchange = async (id: string, available: boolean) => {
@@ -62,11 +80,15 @@ export const CollectionListPage = () => {
             if (filters.country && p.country !== filters.country) return false;
             if (filters.type && p.type !== filters.type) return false;
             if (filters.conservationState && p.conservationState !== filters.conservationState) return false;
+            if (filters.denomination) {
+                const d = extractDenomination(p.name);
+                if (d !== filters.denomination) return false;
+            }
             return true;
         });
     }, [pieces, filters]);
 
-    const hasActiveFilters = filters.search || filters.country || filters.type || filters.conservationState;
+    const hasActiveFilters = filters.search || filters.country || filters.type || filters.conservationState || filters.denomination;
     const availableForExchange = filteredPieces.filter(p => p.availableForExchange).length;
 
     if (isLoading) return (
@@ -156,7 +178,7 @@ export const CollectionListPage = () => {
                 </div>
 
                 {showFilters && (
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3 pt-3 border-t border-gray-100 animate-fade-in">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-3 pt-3 border-t border-gray-100 animate-fade-in">
                         <div>
                             <label className="label text-xs">País</label>
                             <select className="input text-sm py-2" value={filters.country ?? ''} onChange={e => updateFilter('country', e.target.value)}>
@@ -179,10 +201,20 @@ export const CollectionListPage = () => {
                                 {CONSERVATION_STATES.map(s => <option key={s} value={s}>{s}</option>)}
                             </select>
                         </div>
+                        <div>
+                            <label className="label text-xs">Denominación</label>
+                            <input
+                                type="text"
+                                className="input text-sm py-2"
+                                placeholder="Ej: 1, 100, 5000"
+                                value={filters.denomination ?? ''}
+                                onChange={e => updateFilter('denomination', e.target.value)}
+                            />
+                        </div>
                         {hasActiveFilters && (
-                            <div className="sm:col-span-3 flex justify-end">
+                            <div className="sm:col-span-2 lg:col-span-4 flex justify-end">
                                 <button
-                                    onClick={() => setFilters({ search: '', country: '', type: '', conservationState: '' })}
+                                    onClick={() => setFilters({ search: '', country: '', type: '', conservationState: '', denomination: '' })}
                                     className="text-xs text-red-500 hover:text-red-700 font-medium"
                                 >
                                     × Limpiar filtros

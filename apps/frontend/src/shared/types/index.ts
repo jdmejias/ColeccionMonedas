@@ -72,6 +72,7 @@ export interface PieceFilters {
     yearTo?: number;
     availableForExchange?: boolean;
     conservationState?: ConservationState | '';
+    denomination?: string;
 }
 
 export interface User {

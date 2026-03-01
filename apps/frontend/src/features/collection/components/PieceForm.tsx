@@ -25,6 +25,12 @@ const CONSERVATION_STATES: { value: ConservationState; label: string }[] = [
     { value: 'Pobre', label: 'Pobre' },
 ];
 
+/**
+ * Validates that the piece name includes a denomination with a currency symbol.
+ * Valid examples: "Peso Fuerte Argentino $1", "Morgan Dollar US$1", "Billete Bolívares Bs.5000", "Real de Potosí 8R"
+ */
+const PIECE_NAME_REGEX = /^[A-Za-zÀ-ÿ]+(\s[A-Za-zÀ-ÿ.]+)*\s+[^\s]*[^\w\s][^\s]*\d+[^\s]*$|^[A-Za-zÀ-ÿ]+(\s[A-Za-zÀ-ÿ.]+)*\s+\d+[^\w\s][^\s]*$/;
+
 export const PieceForm = ({ piece, mode }: PieceFormProps) => {
     const navigate = useNavigate();
     const createMutation = useCreatePiece();
@@ -46,6 +52,9 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
         const newErrors: Record<string, string> = {};
 
         if (!formData.name.trim()) newErrors.name = 'El nombre es requerido';
+        else if (!PIECE_NAME_REGEX.test(formData.name.trim())) {
+            newErrors.name = 'El nombre debe incluir la denominación con símbolo de moneda (Ej: "Peso Argentino $1", "Morgan Dollar US$1", "Billete Bolívares Bs.5000")';
+        }
         if (!formData.type) newErrors.type = 'El tipo es requerido';
         if (!formData.country.trim()) newErrors.country = 'El país es requerido';
         if (!formData.year) newErrors.year = 'El año es requerido';
@@ -130,7 +139,7 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         error={errors.name}
                         required
-                        placeholder="Ej: Moneda de 1 peso argentino"
+                        placeholder="Ej: Peso Argentino $1, Morgan Dollar US$1"
                     />
                     </div>
 

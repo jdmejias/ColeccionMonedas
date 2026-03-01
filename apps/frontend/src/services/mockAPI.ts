@@ -1,10 +1,29 @@
 import type { Piece, CreatePieceDTO, UpdatePieceDTO, ExchangeRequest, CreateExchangeRequestDTO, ExchangeStatus } from '../shared/types';
 
+/**
+ * Validates that a piece name follows the format: "Name DenominationNumber"
+ * where DenominationNumber includes a currency symbol and a numeric value.
+ * Examples: "Peso Fuerte Argentino $1", "Morgan Dollar US$1", "Billete Bolívares Bs.5000"
+ *
+ * Pattern: at least one word, a space, then a denomination token containing
+ * a currency symbol (non-alphanumeric, non-space) adjacent to digits.
+ */
+const PIECE_NAME_REGEX = /^[A-Za-zÀ-ÿ]+(\s[A-Za-zÀ-ÿ.]+)*\s+[^\s]*[^\w\s][^\s]*\d+[^\s]*$|^[A-Za-zÀ-ÿ]+(\s[A-Za-zÀ-ÿ.]+)*\s+\d+[^\w\s][^\s]*$/;
+
+function validatePieceName(name: string): void {
+    if (!PIECE_NAME_REGEX.test(name.trim())) {
+        throw new Error(
+            'El nombre debe incluir el nombre de la pieza y su denominación con símbolo de moneda. ' +
+            'Formato: "Nombre Denominación" (Ej: "Peso Fuerte Argentino $1", "Morgan Dollar US$1", "Billete Bolívares Bs.5000")'
+        );
+    }
+}
+
 // In-memory storage
 let pieces: Piece[] = [
     {
         id: '1',
-        name: 'Peso Fuerte Argentino 1985',
+        name: 'Peso Fuerte Argentino $1',
         type: 'Moneda',
         country: 'Argentina',
         year: 1985,
@@ -18,7 +37,7 @@ let pieces: Piece[] = [
     },
     {
         id: '2',
-        name: 'Billete 100 Pesos Mexicanos',
+        name: 'Billete Pesos Mexicanos MX$100',
         type: 'Billete',
         country: 'México',
         year: 2019,
@@ -32,7 +51,7 @@ let pieces: Piece[] = [
     },
     {
         id: '3',
-        name: 'Morgan Dollar 1921',
+        name: 'Morgan Dollar US$1',
         type: 'Moneda',
         country: 'Estados Unidos',
         year: 1921,
@@ -46,7 +65,7 @@ let pieces: Piece[] = [
     },
     {
         id: '4',
-        name: '2 Reales Coloniales España 1772',
+        name: 'Reales Coloniales España 2R',
         type: 'Moneda',
         country: 'España',
         year: 1772,
@@ -60,7 +79,7 @@ let pieces: Piece[] = [
     },
     {
         id: '5',
-        name: 'Billete 5000 Bolívares Venezuela',
+        name: 'Billete Bolívares Venezuela Bs.5000',
         type: 'Billete',
         country: 'Venezuela',
         year: 2016,
@@ -74,7 +93,7 @@ let pieces: Piece[] = [
     },
     {
         id: '6',
-        name: 'Franco Suizo de Plata 1935',
+        name: 'Franco Suizo de Plata CHF1',
         type: 'Moneda',
         country: 'Suiza',
         year: 1935,
@@ -88,7 +107,7 @@ let pieces: Piece[] = [
     },
     {
         id: '7',
-        name: 'Billete 1000 Pesos Colombianos 1959',
+        name: 'Billete Pesos Colombianos $1000',
         type: 'Billete',
         country: 'Colombia',
         year: 1959,
@@ -102,7 +121,7 @@ let pieces: Piece[] = [
     },
     {
         id: '8',
-        name: 'Libra Esterlina Victoriana 1887',
+        name: 'Libra Esterlina Victoriana £1',
         type: 'Moneda',
         country: 'Reino Unido',
         year: 1887,
@@ -116,7 +135,7 @@ let pieces: Piece[] = [
     },
     {
         id: '9',
-        name: 'Peso Chileno 1895',
+        name: 'Peso Chileno $1',
         type: 'Moneda',
         country: 'Chile',
         year: 1895,
@@ -130,7 +149,7 @@ let pieces: Piece[] = [
     },
     {
         id: '10',
-        name: 'Real de a 8 Potosí 1800',
+        name: 'Real de Potosí 8R',
         type: 'Moneda',
         country: 'Bolivia',
         year: 1800,
@@ -236,6 +255,7 @@ export const mockAPI = {
 
         create: async (data: CreatePieceDTO): Promise<Piece> => {
             await delay();
+            validatePieceName(data.name);
             const newPiece: Piece = {
                 id: (currentId++).toString(),
                 ...data,
@@ -250,6 +270,9 @@ export const mockAPI = {
 
         update: async (id: string, data: UpdatePieceDTO): Promise<Piece> => {
             await delay();
+            if (data.name) {
+                validatePieceName(data.name);
+            }
             const index = pieces.findIndex(p => p.id === id);
             if (index === -1) throw new Error('Pieza no encontrada');
             pieces[index] = { ...pieces[index], ...data, updatedAt: new Date().toISOString() };

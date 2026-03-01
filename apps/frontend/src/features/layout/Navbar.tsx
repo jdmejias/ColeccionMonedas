@@ -14,7 +14,7 @@ export const Navbar = () => {
         { to: '/exchanges', label: '🔄 Intercambios', show: true },
         { to: '/exchanges/history', label: '📋 Historial', show: isOwner },
         { to: '/pieces/new', label: '➕ Agregar', show: isOwner },
-        { to: '/exchanges/new', label: '🤝 Solicitar', show: true },
+        { to: '/exchanges/new', label: '🤝 Solicitar', show: !isOwner },
     ].filter(l => l.show);
 
     const isActive = (to: string) =>
