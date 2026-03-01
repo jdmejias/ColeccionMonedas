@@ -5,10 +5,65 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model Piece {
+  id                   String            @id @default(uuid())
+  name                 String
+  type                 String
+  country              String
+  year                 Int
+  conservationState    String
+  imageUrl             String
+  imageUrlBack         String            @default("")
+  description          String            @default("")
+  availableForExchange Boolean           @default(false)
+  userId               String            @default("user-1")
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  exchangesFrom        ExchangeRequest[] @relation("FromPiece")
+  exchangesTo          ExchangeRequest[] @relation("ToPiece")
+  comments             Comment[]
+}
+
+model Comment {
+  id         String   @id @default(uuid())
+  pieceId    String
+  authorName String
+  text       String
+  createdAt  DateTime @default(now())
+  piece      Piece    @relation(fields: [pieceId], references: [id], onDelete: Cascade)
+}
+
+model UserProfile {
+  id       String @id @default(uuid())
+  userId   String @unique
+  name     String
+  photoUrl String @default("")
+  bio      String @default("")
+}
+
+model ExchangeRequest {
+  id              String    @id @default(uuid())
+  fromUserId      String
+  toUserId        String
+  fromPieceId     String
+  toPieceId       String
+  status          String    @default("pending")
+  requesterName   String
+  requesterEmail  String
+  message         String?
+  counterOffer    String?
+  counterResponse String?
+  completedAt     DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  fromPiece       Piece     @relation("FromPiece", fields: [fromPieceId], references: [id])
+  toPiece         Piece     @relation("ToPiece", fields: [toPieceId], references: [id])
 }

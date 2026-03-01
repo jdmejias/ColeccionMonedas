@@ -89,7 +89,7 @@ export const CreateExchangePage = () => {
                 <div className="p-3">
                     <h4 className="font-semibold text-sm text-gray-900 mb-1 line-clamp-1">{piece.name}</h4>
                     <div className="text-xs text-gray-500 space-y-0.5">
-                        <p>🌍 {piece.country} · 📅 {piece.year}</p>
+                        <p>{piece.country} · {piece.year}</p>
                     </div>
                 </div>
             </div>
@@ -100,7 +100,6 @@ export const CreateExchangePage = () => {
         <div className="max-w-2xl mx-auto animate-slide-up">
             <div className="page-hero mb-8">
                 <div className="flex items-center gap-3 mb-1">
-                    <span className="text-3xl">🤝</span>
                     <h1 className="font-display text-3xl font-bold">Solicitar Intercambio</h1>
                 </div>
                 <p className="text-primary-100 text-sm">Propone un intercambio justo para ambas partes</p>
@@ -109,7 +108,7 @@ export const CreateExchangePage = () => {
             <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Contact info */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h2 className="font-display text-lg font-bold text-gray-900 mb-4">👤 Tus datos de contacto</h2>
+                    <h2 className="font-display text-lg font-bold text-gray-900 mb-4">Tus datos de contacto</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Input id="requesterName" label="Tu nombre" type="text" placeholder="Carlos Mendoza"
                             value={requesterName} error={errors.requesterName}
@@ -122,7 +121,7 @@ export const CreateExchangePage = () => {
 
                 {/* Piece selection */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h2 className="font-display text-lg font-bold text-gray-900 mb-4">🪙 Selecciona las piezas</h2>
+                    <h2 className="font-display text-lg font-bold text-gray-900 mb-4">Selecciona las piezas</h2>
                     <div className="space-y-4">
                         <Select id="fromPieceId" label="Pieza que ofreces a cambio" value={fromPieceId}
                             onChange={e => { setFromPieceId(e.target.value); setErrors({...errors, fromPieceId: ''}); }}
@@ -139,14 +138,14 @@ export const CreateExchangePage = () => {
                 {/* Preview */}
                 {(selectedFromPiece || selectedToPiece) && (
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                        <h2 className="font-display text-lg font-bold text-gray-900 mb-4">👁️ Vista previa</h2>
+                        <h2 className="font-display text-lg font-bold text-gray-900 mb-4">Vista previa</h2>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
-                                <p className="text-xs font-semibold text-gray-500 uppercase mb-2">🎁 Ofreces</p>
+                                <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Ofreces</p>
                                 <PiecePreview piece={selectedFromPiece} title="Selecciona tu pieza" />
                             </div>
                             <div>
-                                <p className="text-xs font-semibold text-gray-500 uppercase mb-2">🎯 Quieres</p>
+                                <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Quieres</p>
                                 <PiecePreview piece={selectedToPiece} title="Selecciona pieza deseada" />
                             </div>
                         </div>
@@ -155,7 +154,7 @@ export const CreateExchangePage = () => {
 
                 {/* Message */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                    <h2 className="font-display text-lg font-bold text-gray-900 mb-4">💬 Mensaje para el coleccionista</h2>
+                    <h2 className="font-display text-lg font-bold text-gray-900 mb-4">Mensaje para el coleccionista</h2>
                     <textarea
                         rows={3}
                         placeholder="Explica tu propuesta, por qué te interesa la pieza, o cualquier detalle adicional..."
@@ -167,7 +166,7 @@ export const CreateExchangePage = () => {
 
                 <div className="flex gap-3 pb-8">
                     <Button type="submit" variant="primary" isLoading={createExchangeMutation.isPending} size="lg" className="flex-1">
-                        🤝 Enviar Solicitud
+                        Enviar Solicitud
                     </Button>
                     <Button type="button" variant="secondary" onClick={() => navigate('/exchanges')} disabled={createExchangeMutation.isPending} size="lg">
                         Cancelar

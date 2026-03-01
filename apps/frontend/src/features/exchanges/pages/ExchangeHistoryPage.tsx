@@ -23,12 +23,12 @@ const STATUS_CLASS: Record<ExchangeStatus, string> = {
 };
 
 const STATUS_ICON: Record<ExchangeStatus, string> = {
-    pending: '⏳',
-    accepted: '✅',
-    rejected: '❌',
-    countered: '💬',
-    counter_accepted: '✅',
-    counter_rejected: '❌',
+    pending: '',
+    accepted: '',
+    rejected: '',
+    countered: '',
+    counter_accepted: '',
+    counter_rejected: '',
 };
 
 export const ExchangeHistoryPage = () => {
@@ -58,7 +58,6 @@ export const ExchangeHistoryPage = () => {
             {/* Hero */}
             <div className="page-hero mb-8">
                 <div className="flex items-center gap-3 mb-2">
-                    <span className="text-4xl">📋</span>
                     <h1 className="font-display text-4xl font-bold">Historial de Intercambios</h1>
                 </div>
                 <p className="text-primary-100">Registro completo de todos los intercambios finalizados</p>
@@ -67,21 +66,18 @@ export const ExchangeHistoryPage = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-4 mb-8">
                 <div className="stat-card">
-                    <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-xl">📊</div>
                     <div>
                         <p className="text-2xl font-bold text-gray-900">{total}</p>
                         <p className="text-xs text-gray-500">Total finalizados</p>
                     </div>
                 </div>
                 <div className="stat-card">
-                    <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-xl">✅</div>
                     <div>
                         <p className="text-2xl font-bold text-emerald-600">{accepted}</p>
                         <p className="text-xs text-gray-500">Aceptados</p>
                     </div>
                 </div>
                 <div className="stat-card">
-                    <div className="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center text-xl">❌</div>
                     <div>
                         <p className="text-2xl font-bold text-red-600">{rejected}</p>
                         <p className="text-xs text-gray-500">Rechazados</p>
@@ -101,7 +97,7 @@ export const ExchangeHistoryPage = () => {
                                 : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-300'
                         }`}
                     >
-                        {f === 'all' ? `📋 Todos (${total})` : `${STATUS_ICON[f as ExchangeStatus]} ${STATUS_LABEL[f as ExchangeStatus]}`}
+                        {f === 'all' ? `Todos (${total})` : `${STATUS_ICON[f as ExchangeStatus]} ${STATUS_LABEL[f as ExchangeStatus]}`}
                     </button>
                 ))}
             </div>

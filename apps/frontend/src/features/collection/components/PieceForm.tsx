@@ -43,6 +43,7 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
         year: piece?.year?.toString() || '',
         conservationState: piece?.conservationState || '' as ConservationState,
         imageUrl: piece?.imageUrl || '',
+        imageUrlBack: piece?.imageUrlBack || '',
         description: piece?.description || '',
     });
 
@@ -84,6 +85,7 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
             year: Number(formData.year),
             conservationState: formData.conservationState,
             imageUrl: formData.imageUrl.trim(),
+            imageUrlBack: formData.imageUrlBack.trim(),
             description: formData.description.trim(),
         };
 
@@ -190,13 +192,24 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
                     <div className="sm:col-span-2">
                     <Input
                         id="imageUrl"
-                        label="URL de la Imagen"
+                        label="URL Imagen Anverso (frente)"
                         type="url"
                         value={formData.imageUrl}
                         onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                         error={errors.imageUrl}
                         required
-                        placeholder="https://ejemplo.com/imagen.jpg"
+                        placeholder="https://ejemplo.com/imagen-frente.jpg"
+                    />
+                    </div>
+
+                    <div className="sm:col-span-2">
+                    <Input
+                        id="imageUrlBack"
+                        label="URL Imagen Reverso (dorso) — opcional"
+                        type="url"
+                        value={formData.imageUrlBack}
+                        onChange={(e) => setFormData({ ...formData, imageUrlBack: e.target.value })}
+                        placeholder="https://ejemplo.com/imagen-dorso.jpg"
                     />
                     </div>
 
@@ -214,16 +227,28 @@ export const PieceForm = ({ piece, mode }: PieceFormProps) => {
             </div>
 
             {/* Image Preview */}
-            {formData.imageUrl && (
+            {(formData.imageUrl || formData.imageUrlBack) && (
                 <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
-                    <p className="text-xs font-semibold text-gray-500 uppercase mb-3">Vista previa de imagen</p>
-                    <div className="h-40 rounded-xl overflow-hidden bg-gray-100">
-                        <img
-                            src={formData.imageUrl}
-                            alt="Preview"
-                            className="w-full h-full object-cover"
-                            onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
+                    <p className="text-xs font-semibold text-gray-500 uppercase mb-3">Vista previa</p>
+                    <div className="grid grid-cols-2 gap-3">
+                        {formData.imageUrl && (
+                            <div>
+                                <p className="text-xs text-gray-500 mb-1.5 text-center">Anverso</p>
+                                <div className="h-36 rounded-xl overflow-hidden bg-gray-100">
+                                    <img src={formData.imageUrl} alt="Anverso" className="w-full h-full object-cover"
+                                        onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                                </div>
+                            </div>
+                        )}
+                        {formData.imageUrlBack && (
+                            <div>
+                                <p className="text-xs text-gray-500 mb-1.5 text-center">Reverso</p>
+                                <div className="h-36 rounded-xl overflow-hidden bg-gray-100">
+                                    <img src={formData.imageUrlBack} alt="Reverso" className="w-full h-full object-cover"
+                                        onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

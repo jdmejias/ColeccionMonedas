@@ -11,6 +11,7 @@ import { TopCollectionPage } from '../features/collection/pages/TopCollectionPag
 import { CreateExchangePage } from '../features/exchanges/pages/CreateExchangePage';
 import { ExchangeListPage } from '../features/exchanges/pages/ExchangeListPage';
 import { ExchangeHistoryPage } from '../features/exchanges/pages/ExchangeHistoryPage';
+import { ProfilePage } from '../features/profile/ProfilePage';
 
 const withLayout = (element: ReactNode) => (
     <ProtectedRoute>
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
     {
         path: '/exchanges/history',
         element: ownerOnly(<ExchangeHistoryPage />),
+    },
+    {
+        path: '/profile',
+        element: withLayout(<ProfilePage />),
     },
     {
         path: '*',

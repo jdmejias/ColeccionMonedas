@@ -34,13 +34,8 @@ export const TopCollectionPage = () => {
         <div className="animate-slide-up">
             {/* Hero */}
             <div className="page-hero relative overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute top-4 right-16 text-8xl rotate-12">🏆</div>
-                    <div className="absolute -bottom-4 left-8 text-6xl -rotate-12">🪙</div>
-                </div>
                 <div className="relative">
                     <div className="flex items-center gap-3 mb-2">
-                        <span className="text-4xl">🏆</span>
                         <h1 className="font-display text-4xl font-bold">Top 5 de la Colección</h1>
                     </div>
                     <p className="text-primary-100 text-lg">
@@ -89,14 +84,14 @@ export const TopCollectionPage = () => {
                                         </span>
                                         <span className="badge badge-gold">{piece.type}</span>
                                         {piece.availableForExchange && (
-                                            <span className="badge badge-green">🔄 Intercambio</span>
+                                            <span className="badge badge-green">Intercambio</span>
                                         )}
                                     </div>
                                     <h3 className="font-display text-lg font-bold text-gray-900 mb-1">{piece.name}</h3>
                                     <div className="flex flex-wrap gap-3 text-sm text-gray-500">
-                                        <span>🌍 {piece.country}</span>
-                                        <span>📅 {piece.year}</span>
-                                        <span>⭐ {piece.conservationState}</span>
+                                        <span>{piece.country}</span>
+                                        <span>{piece.year}</span>
+                                        <span>{piece.conservationState}</span>
                                     </div>
                                 </div>
 
@@ -114,7 +109,6 @@ export const TopCollectionPage = () => {
 
             {!pieces || pieces.length === 0 ? (
                 <div className="text-center py-16">
-                    <span className="text-6xl block mb-4">🏆</span>
                     <p className="text-gray-500">No hay piezas en la colección aún</p>
                 </div>
             ) : null}

@@ -1,40 +1,49 @@
-import { mockAPI } from './mockAPI';
+import { apiClient } from './api';
 import type { ExchangeRequest, CreateExchangeRequestDTO } from '../shared/types';
 
-// Use mock API in development
 export const exchangesService = {
     getAll: async (): Promise<ExchangeRequest[]> => {
-        return mockAPI.exchanges.getAll();
+        const res = await apiClient.get<ExchangeRequest[]>('/exchanges');
+        return res.data;
     },
 
     getById: async (id: string): Promise<ExchangeRequest> => {
-        return mockAPI.exchanges.getById(id);
+        const res = await apiClient.get<ExchangeRequest>(`/exchanges/${id}`);
+        return res.data;
     },
 
     create: async (data: CreateExchangeRequestDTO): Promise<ExchangeRequest> => {
-        return mockAPI.exchanges.create(data);
+        const res = await apiClient.post<ExchangeRequest>('/exchanges', data);
+        return res.data;
     },
 
     updateStatus: async (
         id: string,
-        status: 'accepted' | 'rejected'
+        status: 'accepted' | 'rejected',
     ): Promise<ExchangeRequest> => {
-        return mockAPI.exchanges.updateStatus(id, status);
+        const res = await apiClient.patch<ExchangeRequest>(`/exchanges/${id}/status`, { status });
+        return res.data;
     },
 
     sendCounterOffer: async (id: string, counterOffer: string): Promise<ExchangeRequest> => {
-        return mockAPI.exchanges.sendCounterOffer(id, counterOffer);
+        const res = await apiClient.patch<ExchangeRequest>(`/exchanges/${id}/counter-offer`, { counterOffer });
+        return res.data;
     },
 
     respondToCounter: async (
         id: string,
         action: 'accept' | 'reject' | 'new',
-        newMessage?: string
+        newMessage?: string,
     ): Promise<ExchangeRequest> => {
-        return mockAPI.exchanges.respondToCounter(id, action, newMessage);
+        const res = await apiClient.patch<ExchangeRequest>(`/exchanges/${id}/counter-response`, {
+            action,
+            message: newMessage,
+        });
+        return res.data;
     },
 
     getHistory: async (): Promise<ExchangeRequest[]> => {
-        return mockAPI.exchanges.getHistory();
+        const res = await apiClient.get<ExchangeRequest[]>('/exchanges/history');
+        return res.data;
     },
 };

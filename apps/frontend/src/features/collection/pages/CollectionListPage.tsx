@@ -124,7 +124,7 @@ export const CollectionListPage = () => {
                             to="/pieces/new"
                             className="btn btn-gold self-start sm:self-auto px-5 py-2.5 rounded-xl font-semibold text-sm"
                         >
-                            ➕ Agregar Pieza
+                            Agregar Pieza
                         </Link>
                     )}
                 </div>
@@ -132,13 +132,12 @@ export const CollectionListPage = () => {
                 {/* Stats row */}
                 <div className="flex flex-wrap gap-4 mt-5">
                     {[
-                        { label: 'Total piezas', value: pieces?.length ?? 0, icon: '🪙' },
-                        { label: 'Monedas', value: pieces?.filter(p => p.type === 'Moneda').length ?? 0, icon: '🔵' },
-                        { label: 'Billetes', value: pieces?.filter(p => p.type === 'Billete').length ?? 0, icon: '🟢' },
-                        { label: 'En intercambio', value: availableForExchange, icon: '🔄' },
+                        { label: 'Total piezas', value: pieces?.length ?? 0 },
+                        { label: 'Monedas', value: pieces?.filter(p => p.type === 'Moneda').length ?? 0 },
+                        { label: 'Billetes', value: pieces?.filter(p => p.type === 'Billete').length ?? 0 },
+                        { label: 'En intercambio', value: availableForExchange },
                     ].map(stat => (
                         <div key={stat.label} className="bg-white/20 backdrop-blur-sm rounded-xl px-4 py-2 text-white text-sm">
-                            <span className="mr-1.5">{stat.icon}</span>
                             <span className="font-semibold">{stat.value}</span>
                             <span className="text-primary-100 ml-1.5">{stat.label}</span>
                         </div>
@@ -203,13 +202,14 @@ export const CollectionListPage = () => {
                         </div>
                         <div>
                             <label className="label text-xs">Denominación</label>
-                            <input
-                                type="text"
+                            <select
                                 className="input text-sm py-2"
-                                placeholder="Ej: 1, 100, 5000"
                                 value={filters.denomination ?? ''}
                                 onChange={e => updateFilter('denomination', e.target.value)}
-                            />
+                            >
+                                <option value="">Todas las denominaciones</option>
+                                {availableDenominations.map(d => <option key={d} value={d}>{d}</option>)}
+                            </select>
                         </div>
                         {hasActiveFilters && (
                             <div className="sm:col-span-2 lg:col-span-4 flex justify-end">

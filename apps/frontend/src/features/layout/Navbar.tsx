@@ -9,12 +9,13 @@ export const Navbar = () => {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const navLinks = [
-        { to: '/', label: '🏛️ Colección', show: true },
-        { to: '/top', label: '🏆 Top 5', show: true },
-        { to: '/exchanges', label: '🔄 Intercambios', show: true },
-        { to: '/exchanges/history', label: '📋 Historial', show: isOwner },
-        { to: '/pieces/new', label: '➕ Agregar', show: isOwner },
-        { to: '/exchanges/new', label: '🤝 Solicitar', show: !isOwner },
+        { to: '/', label: 'Colección', show: true },
+        { to: '/top', label: 'Top 5', show: true },
+        { to: '/exchanges', label: 'Intercambios', show: true },
+        { to: '/exchanges/history', label: 'Historial', show: isOwner },
+        { to: '/pieces/new', label: 'Agregar', show: isOwner },
+        { to: '/exchanges/new', label: 'Solicitar', show: !isOwner },
+        { to: '/profile', label: 'Perfil', show: true },
     ].filter(l => l.show);
 
     const isActive = (to: string) =>

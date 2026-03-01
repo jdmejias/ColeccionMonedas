@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Piece } from '../../../shared/types';
 
@@ -25,14 +26,17 @@ export const PieceCard = ({
     isDeleting,
 }: PieceCardProps) => {
     const navigate = useNavigate();
+    const [showBack, setShowBack] = useState(false);
+    const hasBack = !!piece.imageUrlBack;
+    const currentImage = showBack && hasBack ? piece.imageUrlBack! : piece.imageUrl;
 
     return (
         <div className="card group flex flex-col h-full animate-fade-in">
             {/* Image */}
             <div className="relative h-44 bg-gradient-to-br from-amber-50 to-gray-100 overflow-hidden">
                 <img
-                    src={piece.imageUrl}
-                    alt={piece.name}
+                    src={currentImage}
+                    alt={showBack ? `${piece.name} (reverso)` : piece.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     onError={e => {
                         (e.target as HTMLImageElement).src =
@@ -46,7 +50,7 @@ export const PieceCard = ({
                 {/* Type badge */}
                 <div className="absolute top-2.5 left-2.5">
                     <span className={`tag text-[11px] ${piece.type === 'Moneda' ? 'bg-blue-50/90 text-blue-700 border-blue-100' : 'bg-green-50/90 text-green-700 border-green-100'} backdrop-blur-sm`}>
-                        {piece.type === 'Moneda' ? '🔵' : '🟢'} {piece.type}
+                        {piece.type}
                     </span>
                 </div>
 
@@ -54,11 +58,21 @@ export const PieceCard = ({
                 {piece.availableForExchange && (
                     <div className="absolute top-2.5 right-2.5">
                         <span className="badge badge-green text-[11px] bg-emerald-500/90 text-white backdrop-blur-sm border-0">
-                            🔄 Intercambio
+                            Intercambio
                         </span>
                     </div>
                 )}
 
+                {/* Flip button (only if back image exists) */}
+                {hasBack && (
+                    <button
+                        onClick={e => { e.stopPropagation(); setShowBack(v => !v); }}
+                        className="absolute bottom-2 right-2 bg-black/60 hover:bg-black/80 text-white text-[10px] px-2 py-1 rounded-lg backdrop-blur-sm transition-colors flex items-center gap-1"
+                        title={showBack ? 'Ver anverso' : 'Ver reverso'}
+                    >
+                        {showBack ? 'Anverso' : 'Reverso'}
+                    </button>
+                )}
             </div>
 
             {/* Body */}
@@ -68,8 +82,8 @@ export const PieceCard = ({
                 </h3>
 
                 <div className="flex flex-wrap gap-1.5 mb-3">
-                    <span className="tag text-[11px]">🌍 {piece.country}</span>
-                    <span className="tag text-[11px]">📅 {piece.year}</span>
+                    <span className="tag text-[11px]">{piece.country}</span>
+                    <span className="tag text-[11px]">{piece.year}</span>
                     <span className={`badge ${CONSERVATION_COLOR[piece.conservationState] ?? 'badge-gray'} text-[11px]`}>
                         {piece.conservationState}
                     </span>

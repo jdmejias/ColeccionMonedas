@@ -15,6 +15,7 @@ export interface Piece {
     year: number;
     conservationState: ConservationState;
     imageUrl: string;
+    imageUrlBack?: string;
     description: string;
     availableForExchange: boolean;
     userId: string;
@@ -29,6 +30,7 @@ export interface CreatePieceDTO {
     year: number;
     conservationState: ConservationState;
     imageUrl: string;
+    imageUrlBack?: string;
     description: string;
 }
 
@@ -80,4 +82,19 @@ export interface User {
     name: string;
     email: string;
     role: 'owner' | 'visitor';
+}
+
+export interface Comment {
+    id: string;
+    pieceId: string;
+    authorName: string;
+    text: string;
+    createdAt: string;
+}
+
+export interface UserProfile {
+    userId: string;
+    name: string;
+    photoUrl: string;
+    bio: string;
 }

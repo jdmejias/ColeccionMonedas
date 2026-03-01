@@ -84,13 +84,13 @@ const CounterResponseModal = ({ exchange, onClose, onRespond, isLoading }: Count
                 {mode === 'choose' ? (
                     <div className="flex flex-col gap-3">
                         <Button variant="primary" isLoading={isLoading} onClick={() => onRespond('accept')} className="w-full">
-                            ✅ Aceptar contraoferta
+                            Aceptar contraoferta
                         </Button>
                         <Button variant="ghost" isLoading={isLoading} onClick={() => setMode('new')} className="w-full border border-blue-300 text-blue-700">
-                            💬 Proponer nueva oferta
+                            Proponer nueva oferta
                         </Button>
                         <Button variant="danger" isLoading={isLoading} onClick={() => onRespond('reject')} className="w-full">
-                            ❌ Rechazar
+                            Rechazar
                         </Button>
                         <Button variant="secondary" onClick={onClose} disabled={isLoading}>Cerrar</Button>
                     </div>
@@ -156,7 +156,6 @@ export const ExchangeListPage = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
-                            <span className="text-4xl">🔄</span>
                             <h1 className="font-display text-4xl font-bold">Intercambios</h1>
                         </div>
                         <p className="text-primary-100">Gestiona tus solicitudes de intercambio</p>
@@ -165,7 +164,7 @@ export const ExchangeListPage = () => {
                         to="/exchanges/new"
                         className="btn btn-gold self-start sm:self-auto px-5 py-2.5 rounded-xl font-semibold text-sm"
                     >
-                        🤝 Nueva solicitud
+                        Nueva solicitud
                     </Link>
                 </div>
             </div>
@@ -174,13 +173,12 @@ export const ExchangeListPage = () => {
             {isOwner && (
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
                     {[
-                        { label: 'Pendientes', value: incoming.filter(e => e.status === 'pending').length, color: 'text-yellow-600', bg: 'bg-yellow-50', icon: '⏳' },
-                        { label: 'Contraofertas', value: incoming.filter(e => e.status === 'countered').length, color: 'text-blue-600', bg: 'bg-blue-50', icon: '💬' },
-                        { label: 'Aceptados', value: outgoing.filter(e => e.status === 'accepted' || e.status === 'counter_accepted').length, color: 'text-green-600', bg: 'bg-green-50', icon: '✅' },
-                        { label: 'Rechazados', value: outgoing.filter(e => e.status === 'rejected' || e.status === 'counter_rejected').length, color: 'text-red-600', bg: 'bg-red-50', icon: '❌' },
+                        { label: 'Pendientes', value: incoming.filter(e => e.status === 'pending').length, color: 'text-yellow-600', bg: 'bg-yellow-50' },
+                        { label: 'Contraofertas', value: incoming.filter(e => e.status === 'countered').length, color: 'text-blue-600', bg: 'bg-blue-50' },
+                        { label: 'Aceptados', value: outgoing.filter(e => e.status === 'accepted' || e.status === 'counter_accepted').length, color: 'text-green-600', bg: 'bg-green-50' },
+                        { label: 'Rechazados', value: outgoing.filter(e => e.status === 'rejected' || e.status === 'counter_rejected').length, color: 'text-red-600', bg: 'bg-red-50' },
                     ].map(stat => (
                         <div key={stat.label} className={`${stat.bg} rounded-2xl p-4 flex items-center gap-3`}>
-                            <span className="text-2xl">{stat.icon}</span>
                             <div>
                                 <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
                                 <p className="text-xs text-gray-500">{stat.label}</p>
@@ -200,7 +198,7 @@ export const ExchangeListPage = () => {
                             : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-300'
                     }`}
                 >
-                    📥 Activas
+                    Activas
                     {pendingCount > 0 && (
                         <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">{pendingCount}</span>
                     )}
@@ -213,14 +211,13 @@ export const ExchangeListPage = () => {
                             : 'bg-white text-gray-600 border border-gray-200 hover:border-primary-300'
                     }`}
                 >
-                    ✅ Finalizadas ({outgoing.length})
+                    Finalizadas ({outgoing.length})
                 </button>
             </div>
 
             {/* Empty state */}
             {shown.length === 0 && (
                 <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
-                    <span className="text-6xl block mb-3">🔄</span>
                     <h3 className="font-display text-xl font-semibold text-gray-900 mb-2">No hay intercambios aquí</h3>
                     <p className="text-gray-500 mb-6">
                         {activeTab === 'incoming' ? 'No tienes solicitudes activas' : 'Aún no hay intercambios finalizados'}
@@ -247,9 +244,6 @@ export const ExchangeListPage = () => {
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
                                 <div className="flex items-center gap-3">
                                     <div className="w-10 h-10 bg-primary-50 rounded-xl flex items-center justify-center">
-                                        <span className="text-xl">🤝</span>
-                                    </div>
-                                    <div>
                                         <p className="font-semibold text-gray-900">{exchange.requesterName}</p>
                                         <p className="text-xs text-gray-500">{exchange.requesterEmail} · {new Date(exchange.createdAt).toLocaleDateString('es-ES')}</p>
                                     </div>
@@ -285,14 +279,14 @@ export const ExchangeListPage = () => {
                             {/* Message */}
                             {exchange.message && (
                                 <div className="bg-amber-50 rounded-xl p-3 mb-4 text-sm text-amber-900 border border-amber-100">
-                                    <span className="font-semibold">💬 Mensaje: </span>{exchange.message}
+                                    <span className="font-semibold">Mensaje: </span>{exchange.message}
                                 </div>
                             )}
 
                             {/* Counter offer */}
                             {exchange.counterOffer && (
                                 <div className="bg-blue-50 rounded-xl p-3 mb-4 text-sm text-blue-800 border border-blue-100">
-                                    <span className="font-semibold">🔁 Contraoferta: </span>{exchange.counterOffer}
+                                    <span className="font-semibold">Contraoferta: </span>{exchange.counterOffer}
                                 </div>
                             )}
 
@@ -305,7 +299,7 @@ export const ExchangeListPage = () => {
                                         isLoading={updateStatus.isPending}
                                         onClick={() => updateStatus.mutate({ id: exchange.id, status: 'accepted' })}
                                     >
-                                        ✅ Aceptar
+                                        Aceptar
                                     </Button>
                                     <Button
                                         size="sm"
@@ -313,7 +307,7 @@ export const ExchangeListPage = () => {
                                         className="border border-blue-300 text-blue-700 hover:bg-blue-50"
                                         onClick={() => setCounterTarget(exchange)}
                                     >
-                                        💬 Contraoferta
+                                        Contraoferta
                                     </Button>
                                     <Button
                                         size="sm"
@@ -321,7 +315,7 @@ export const ExchangeListPage = () => {
                                         isLoading={updateStatus.isPending}
                                         onClick={() => updateStatus.mutate({ id: exchange.id, status: 'rejected' })}
                                     >
-                                        ❌ Rechazar
+                                        Rechazar
                                     </Button>
                                 </div>
                             )}
@@ -330,7 +324,7 @@ export const ExchangeListPage = () => {
                             {!isOwner && exchange.status === 'countered' && (
                                 <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
                                     <Button size="sm" variant="primary" onClick={() => setCounterResponseTarget(exchange)}>
-                                        💬 Responder contraoferta
+                                        Responder contraoferta
                                     </Button>
                                 </div>
                             )}
@@ -340,11 +334,11 @@ export const ExchangeListPage = () => {
                                 <div className="flex flex-wrap gap-2 pt-3 border-t border-gray-100">
                                     <Button size="sm" variant="primary" isLoading={updateStatus.isPending}
                                         onClick={() => updateStatus.mutate({ id: exchange.id, status: 'accepted' })}>
-                                        ✅ Aceptar todo
+                                        Aceptar todo
                                     </Button>
                                     <Button size="sm" variant="danger" isLoading={updateStatus.isPending}
                                         onClick={() => updateStatus.mutate({ id: exchange.id, status: 'rejected' })}>
-                                        ❌ Rechazar
+                                        Rechazar
                                     </Button>
                                 </div>
                             )}
