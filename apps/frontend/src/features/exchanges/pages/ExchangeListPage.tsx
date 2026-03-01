@@ -160,12 +160,14 @@ export const ExchangeListPage = () => {
                         </div>
                         <p className="text-primary-100">Gestiona tus solicitudes de intercambio</p>
                     </div>
-                    <Link
-                        to="/exchanges/new"
-                        className="btn btn-gold self-start sm:self-auto px-5 py-2.5 rounded-xl font-semibold text-sm"
-                    >
-                        Nueva solicitud
-                    </Link>
+                    {!isOwner && (
+                        <Link
+                            to="/exchanges/new"
+                            className="btn btn-gold self-start sm:self-auto px-5 py-2.5 rounded-xl font-semibold text-sm"
+                        >
+                            Nueva solicitud
+                        </Link>
+                    )}
                 </div>
             </div>
 
@@ -222,9 +224,11 @@ export const ExchangeListPage = () => {
                     <p className="text-gray-500 mb-6">
                         {activeTab === 'incoming' ? 'No tienes solicitudes activas' : 'Aún no hay intercambios finalizados'}
                     </p>
-                    <Link to="/exchanges/new" className="btn btn-primary px-6 py-2.5 rounded-xl text-sm">
-                        Crear solicitud
-                    </Link>
+                    {!isOwner && (
+                        <Link to="/exchanges/new" className="btn btn-primary px-6 py-2.5 rounded-xl text-sm">
+                            Crear solicitud
+                        </Link>
+                    )}
                 </div>
             )}
 

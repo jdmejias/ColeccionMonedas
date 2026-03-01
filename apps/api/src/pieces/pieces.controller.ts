@@ -41,6 +41,14 @@ export class PiecesController {
         return this.piecesService.update(id, body);
     }
 
+    @Patch(':id/top')
+    setTop(
+        @Param('id') id: string,
+        @Body('isTop') isTop: boolean,
+    ) {
+        return this.piecesService.setTop(id, isTop);
+    }
+
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
     delete(@Param('id') id: string) {

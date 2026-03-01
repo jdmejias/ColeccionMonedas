@@ -8,6 +8,8 @@ interface PieceCardProps {
     isToggling?: boolean;
     onDelete?: (id: string) => void;
     isDeleting?: boolean;
+    onToggleTop?: (id: string, isTop: boolean) => void;
+    isTogglingTop?: boolean;
 }
 
 const CONSERVATION_COLOR: Record<string, string> = {
@@ -24,6 +26,8 @@ export const PieceCard = ({
     isToggling,
     onDelete,
     isDeleting,
+    onToggleTop,
+    isTogglingTop,
 }: PieceCardProps) => {
     const navigate = useNavigate();
     const [showBack, setShowBack] = useState(false);
@@ -48,10 +52,15 @@ export const PieceCard = ({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
                 {/* Type badge */}
-                <div className="absolute top-2.5 left-2.5">
+                <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
                     <span className={`tag text-[11px] ${piece.type === 'Moneda' ? 'bg-blue-50/90 text-blue-700 border-blue-100' : 'bg-green-50/90 text-green-700 border-green-100'} backdrop-blur-sm`}>
                         {piece.type}
                     </span>
+                    {piece.isTop && (
+                        <span className="badge badge-gold text-[11px] flex items-center gap-1">
+                            ⭐ Top
+                        </span>
+                    )}
                 </div>
 
                 {/* Exchange badge */}
@@ -133,6 +142,19 @@ export const PieceCard = ({
                                 className="btn btn-ghost text-xs py-1.5 rounded-xl border border-red-200 text-red-500 hover:bg-red-50 px-2.5"
                             >
                                 {isDeleting ? '...' : '🗑️'}
+                            </button>
+                        )}
+                        {onToggleTop && (
+                            <button
+                                onClick={() => onToggleTop(piece.id, !piece.isTop)}
+                                disabled={isTogglingTop}
+                                className={`btn text-xs py-1.5 rounded-xl px-2.5 flex items-center gap-1 ${
+                                    piece.isTop
+                                        ? 'btn-ghost border border-yellow-300 text-yellow-700 hover:bg-yellow-50'
+                                        : 'btn-ghost border border-gray-200 text-gray-500 hover:bg-gray-50'
+                                }`}
+                            >
+                                {isTogglingTop ? '...' : piece.isTop ? '★ Quitar Top' : '☆ Top' }
                             </button>
                         )}
                     </div>

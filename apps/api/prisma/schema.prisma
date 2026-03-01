@@ -24,6 +24,7 @@ model Piece {
   imageUrlBack         String            @default("")
   description          String            @default("")
   availableForExchange Boolean           @default(false)
+  isTop                Boolean           @default(false)
   userId               String            @default("user-1")
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt

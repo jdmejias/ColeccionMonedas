@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { usePieces, useToggleExchange, useDeletePiece } from '../hooks/usePieces';
+import { usePieces, useToggleExchange, useDeletePiece, useToggleTop } from '../hooks/usePieces';
 import { useAuth } from '../../auth/AuthContext';
 import { PieceCard } from '../components/PieceCard';
 import { Spinner } from '../../../shared/components/Spinner';
@@ -18,11 +18,13 @@ function extractDenomination(name: string): string | null {
 export const CollectionListPage = () => {
     const { data: pieces, isLoading, isError, error } = usePieces();
     const toggleMutation = useToggleExchange();
+    const toggleTopMutation = useToggleTop();
     const deleteMutation = useDeletePiece();
     const { isOwner } = useAuth();
 
     const [togglingId, setTogglingId] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [togglingTopId, setTogglingTopId] = useState<string | null>(null);
     const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
     const [filters, setFilters] = useState<PieceFilters>({
@@ -65,6 +67,18 @@ export const CollectionListPage = () => {
         } finally {
             setDeletingId(null);
             setConfirmDeleteId(null);
+        }
+    };
+
+    const handleToggleTop = async (id: string, isTop: boolean) => {
+        setTogglingTopId(id);
+        try {
+            await toggleTopMutation.mutateAsync({ id, isTop });
+        } catch (e: any) {
+            const message = e?.response?.data?.message ?? 'Error al actualizar el Top Collection';
+            alert(message);
+        } finally {
+            setTogglingTopId(null);
         }
     };
 
@@ -260,6 +274,8 @@ export const CollectionListPage = () => {
                         isToggling={togglingId === piece.id}
                         onDelete={isOwner ? (id) => setConfirmDeleteId(id) : undefined}
                         isDeleting={deletingId === piece.id}
+                        onToggleTop={isOwner ? handleToggleTop : undefined}
+                        isTogglingTop={togglingTopId === piece.id}
                     />
                 ))}
             </div>

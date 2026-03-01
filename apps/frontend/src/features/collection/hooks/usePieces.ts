@@ -61,6 +61,19 @@ export const useToggleExchange = () => {
     });
 };
 
+export const useToggleTop = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ id, isTop }: { id: string; isTop: boolean }) =>
+            piecesService.toggleTop(id, isTop),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ['pieces'] });
+            queryClient.invalidateQueries({ queryKey: ['pieces', variables.id] });
+            queryClient.invalidateQueries({ queryKey: ['pieces', 'top'] });
+        },
+    });
+};
+
 export const useTopPieces = (limit = 5) => {
     return useQuery({
         queryKey: ['pieces', 'top', limit],

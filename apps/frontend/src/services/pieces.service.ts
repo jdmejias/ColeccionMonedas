@@ -31,6 +31,11 @@ export const piecesService = {
         return res.data;
     },
 
+    toggleTop: async (id: string, isTop: boolean): Promise<Piece> => {
+        const res = await apiClient.patch<Piece>(`/pieces/${id}/top`, { isTop });
+        return res.data;
+    },
+
     getTopByValue: async (limit = 5): Promise<Piece[]> => {
         const res = await apiClient.get<Piece[]>(`/pieces/top?limit=${limit}`);
         return res.data;

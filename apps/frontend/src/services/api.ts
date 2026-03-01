@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+// Preferimos VITE_API_URL (docker-compose) o VITE_API_BASE_URL.
+// El backend usa prefijo global '/api', así que el valor debe incluirlo.
+const API_BASE_URL =
+    import.meta.env.VITE_API_URL ||
+    import.meta.env.VITE_API_BASE_URL ||
+    'http://localhost:3000/api';
 
 export const apiClient = axios.create({
     baseURL: API_BASE_URL,

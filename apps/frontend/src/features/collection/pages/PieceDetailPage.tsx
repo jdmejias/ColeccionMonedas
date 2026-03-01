@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { usePiece, useToggleExchange, useDeletePiece, useSimilarPieces } from '../hooks/usePieces';
 import { useComments, useAddComment, useDeleteComment } from '../hooks/useComments';
@@ -128,13 +128,13 @@ export const PieceDetailPage = () => {
                                     onClick={() => setImgTab('front')}
                                     className={`flex-1 py-2.5 text-xs font-semibold transition-colors ${imgTab === 'front' ? 'bg-white text-primary-700 border-b-2 border-primary-500' : 'text-gray-500 hover:text-gray-700'}`}
                                 >
-                                    ðŸª™ Anverso
+                                    Anverso
                                 </button>
                                 <button
                                     onClick={() => setImgTab('back')}
                                     className={`flex-1 py-2.5 text-xs font-semibold transition-colors ${imgTab === 'back' ? 'bg-white text-primary-700 border-b-2 border-primary-500' : 'text-gray-500 hover:text-gray-700'}`}
                                 >
-                                    ðŸ” Reverso
+                                    Reverso
                                 </button>
                             </div>
                         )}
@@ -211,7 +211,7 @@ export const PieceDetailPage = () => {
                             {isOwner && (
                                 <div className="flex gap-2">
                                     <Button variant="primary" onClick={() => navigate(`/pieces/${piece.id}/edit`)} className="flex-1">
-                                        âœï¸ Editar Pieza
+                                        Editar Pieza
                                     </Button>
                                     <Button
                                         variant={piece.availableForExchange ? 'ghost' : 'secondary'}
@@ -219,9 +219,9 @@ export const PieceDetailPage = () => {
                                         onClick={handleToggleExchange}
                                         isLoading={toggleMutation.isPending}
                                     >
-                                        {piece.availableForExchange ? 'ðŸ”’ Quitar de intercambio' : 'ðŸ”„ Poner en intercambio'}
+                                        {piece.availableForExchange ? '❌ Quitar de intercambio' : '✅ Poner en intercambio'}
                                     </Button>
-                                    <Button variant="danger" onClick={() => setShowDeleteModal(true)} className="px-3">ðŸ—‘ï¸</Button>
+                                    <Button variant="danger" onClick={() => setShowDeleteModal(true)} className="px-3">🗑️</Button>
                                 </div>
                             )}
                             {!isOwner && piece.availableForExchange && (

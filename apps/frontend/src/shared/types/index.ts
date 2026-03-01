@@ -18,6 +18,7 @@ export interface Piece {
     imageUrlBack?: string;
     description: string;
     availableForExchange: boolean;
+    isTop: boolean;
     userId: string;
     createdAt: string;
     updatedAt: string;

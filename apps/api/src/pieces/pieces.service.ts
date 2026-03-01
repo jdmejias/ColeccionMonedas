@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import { DEFAULT_PIECES } from './default-pieces';
 
 const PIECE_NAME_REGEX =
     /^[A-Za-zÀ-ÿ]+(\s[A-Za-zÀ-ÿ.]+)*\s+[^\s]*[^\w\s][^\s]*\d+[^\s]*$|^[A-Za-zÀ-ÿ]+(\s[A-Za-zÀ-ÿ.]+)*\s+\d+[^\w\s][^\s]*$/;
@@ -32,7 +33,16 @@ export interface UpdatePieceDTO extends Partial<CreatePieceDTO> {
 export class PiecesService {
     constructor(private prisma: PrismaService) {}
 
-    getAll() {
+    async getAll() {
+        // Seed de seguridad: si faltan piezas de ejemplo, se insertan de forma idempotente.
+        const existing = await this.prisma.piece.findMany({ select: { name: true } });
+        const existingNames = new Set(existing.map((p) => p.name));
+        const missing = DEFAULT_PIECES.filter((p) => !existingNames.has(p.name));
+
+        if (missing.length > 0) {
+            await this.prisma.piece.createMany({ data: missing });
+        }
+
         return this.prisma.piece.findMany({ orderBy: { createdAt: 'desc' } });
     }
 
@@ -96,8 +106,29 @@ export class PiecesService {
         });
     }
 
+    async setTop(id: string, isTop: boolean) {
+        const piece = await this.getById(id);
+
+        if (isTop) {
+            // If already top, nothing to do
+            if (piece.isTop) return piece;
+
+            const currentTopCount = await this.prisma.piece.count({ where: { isTop: true } });
+            if (currentTopCount >= 5) {
+                throw new BadRequestException('Solo se pueden seleccionar hasta 5 piezas para el Top Collection');
+            }
+        }
+
+        return this.prisma.piece.update({
+            where: { id },
+            data: { isTop },
+        });
+    }
+
     getTopByValue(limit = 5) {
+        // Now returns the pieces explicitly marcadas como Top
         return this.prisma.piece.findMany({
+            where: { isTop: true },
             orderBy: { createdAt: 'desc' },
             take: limit,
         });
